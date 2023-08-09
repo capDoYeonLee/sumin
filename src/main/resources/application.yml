@@ -1,8 +1,10 @@
 spring:
+  main:
+    web-application-type=none:
   profiles:
     active: local
   datasource:
-    url: jdbc:mysql://localhost:13305/boarding?allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${DB_NAME:boarding}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&tinyInt1isBit=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 1234
@@ -10,7 +12,7 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    url: jdbc:mysql://localhost:13305/boarding?useSSL=false&serverTimezone=UTC&characterEncoding=utf8
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${DB_NAME:boarding}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&tinyInt1isBit=false
     user: root
     password: 1234
 

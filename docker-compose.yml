@@ -1,0 +1,40 @@
+
+version: '3'
+services:
+  db:
+    restart: always
+    image: mysql:8
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Seoul
+      - MYSQL_DATABASE=boarding
+      - DOCKER_DEFAULT_PLATFORM=linux/amd64
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--lower_case_table_names=1", "--max_connections=2048", "--wait_timeout=3600"]
+    volumes:
+      - ./data/:/var/lib/mysql
+    networks:
+      - my_network
+
+  app:
+    build:
+      context: .
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/coupon?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - DOCKER_DEFAULT_PLATFORM=linux/amd64
+    container_name: spring-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: always
+    tty: true
+    networks:
+      - my_network
+
+networks:
+  my_network:
